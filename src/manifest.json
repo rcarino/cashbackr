@@ -4,11 +4,11 @@
     "page": "background.html"
   },
   "browser_action": {
-    "default_icon": "money_mouth.png"
+    "default_icon": "assets/money_mouth.png"
   },
   "description": "Like the ebates cash back button, but it doesn't track you.",
   "icons": {
-    "128": "money_mouth.png"
+    "128": "assets/money_mouth.png"
   },
   "name": "CashBackR",
   "permissions": [

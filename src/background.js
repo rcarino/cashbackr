@@ -29,8 +29,8 @@ async function initPlugin() {
 
     // Why XHR instead of import? Node doesn't support es6 modules. There's a node script that reads
     // cashbackDomains.json to determine whether the list of ebates domain has added or removed cashback merchants
-    cashbackDomains = new Set(await $.get('cashbackDomains.json'));
-    domainToSpecialEbatesUrl = await $.get('domainRedirectMap.json');
+    cashbackDomains = new Set(await $.get('assets/cashbackDomains.json'));
+    domainToSpecialEbatesUrl = await $.get('assets/domainRedirectMap.json');
 
     chrome.browserAction.disable(); // Btn disabled by default
 

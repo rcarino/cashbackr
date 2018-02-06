@@ -20,7 +20,7 @@ flying money logo will become clickable and link you to Ebates' store link.
 2. The flying cash icon to the right of the chrome omnibar will become clickable
 3. Click into it to open a new ebates tab
 4. Start your shopping trip from ebates
-![](cashbackr_demo.gif)
+![](play_store_assets/cashbackr_demo.gif)
 
 ## Future ideas
 1. integrate with more than just ebates

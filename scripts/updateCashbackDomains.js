@@ -8,7 +8,8 @@ const {promisify} = require('util');
  * Node script that updates well known list of cashback domains if any changes are detected
  */
 
-const OLDCASHBACKDOMAINS = '../src/cashbackDomains.json';
+const ASSETS = '../src/assets';
+const OLDCASHBACKDOMAINS = `${ASSETS}/cashbackDomains.json`;
 
 const pReadFile = promisify(fs.readFile); // Allows script to expect errors and not barf if a file is not found
 
@@ -48,7 +49,7 @@ const domainExtractorRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+
 
 async function getSpecialCaseDomains() {
     try {
-        return Object.values(JSON.parse(await pReadFile('../src/domainRedirectMap.json', 'utf8')));
+        return Object.values(JSON.parse(await pReadFile(`${ASSETS}/domainRedirectMap.json`, 'utf8')));
     } catch (e) {
         return []; // File not found
     }
