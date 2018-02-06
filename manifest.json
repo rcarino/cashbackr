@@ -1,0 +1,19 @@
+{
+  "background": {
+    "persistent": false,
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": "flying_money.png"
+  },
+  "description": "Like the ebates cash back button, but it doesn't track you.",
+  "icons": {
+    "128": "flying_money.png"
+  },
+  "name": "CashBackR",
+  "permissions": [
+    "tabs"
+   ],
+  "version": "1.0.0",
+  "manifest_version": 2
+}
