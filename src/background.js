@@ -16,12 +16,9 @@ const getDomain = tab => tab ? tab.url.match(domainExtractorRegex)[1] : null;
 
 const enableBtn = () => {
     chrome.browserAction.enable();
-    // chrome.browserAction.setBadgeBackgroundColor({color: 'green'});
-    // chrome.browserAction.setBadgeText({text: '🤑'});
 };
 
 const disableBtn = () => {
-    // chrome.browserAction.setBadgeText({text: ''});
     chrome.browserAction.disable();
 };
 
