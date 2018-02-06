@@ -1,4 +1,5 @@
 # CashBackR
+https://chrome.google.com/webstore/detail/cashbackr/mmnmabnpkbjiehgagfdimcoiojicedoo
 
 ## What is it?
 It's a button that links you to ebates if a site is cash-back eligible.
