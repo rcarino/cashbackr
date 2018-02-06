@@ -42,7 +42,7 @@ async function checkForCashbackDomainChanges() {
         console.log('NO CHANGES DETECTED');
     }
 
-    await flagSpecialCases(newDomains);
+    // await flagSpecialCases(newDomains);
 }
 
 const domainExtractorRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im;
