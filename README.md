@@ -15,6 +15,10 @@ It looks at your current tab's URL and if it's cashback eligible, the
 flying money logo will become clickable and link you to Ebates' store link.
 
 ## Demo
+1. Navigate to an ebates eligible ecommerce site (like target.com)
+2. The flying cash icon to the right of the chrome omnibar will become clickable
+3. Click into it to open a new ebates tab
+4. Start your shopping trip from ebates
 ![](cashbackr_demo.gif)
 
 ## Future ideas
