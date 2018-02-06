@@ -14,27 +14,19 @@ const goToEbates = () => {
 const domainExtractorRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im;
 const getDomain = tab => tab ? tab.url.match(domainExtractorRegex)[1] : null;
 
-const enableBtn = () => {
-    chrome.browserAction.enable();
-};
-
-const disableBtn = () => {
-    chrome.browserAction.disable();
-};
-
 const toggleEbatesButton = () => {
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
         const domain = getDomain(tabs[0]);
         if (cashbackDomains.has(domain) || domainToSpecialEbatesUrl.hasOwnProperty(domain)) {
-            enableBtn();
+            chrome.browserAction.enable();
         } else {
-            disableBtn();
+            chrome.browserAction.disable();
         }
     });
 };
 
 const initPlugin = () => {
-    disableBtn(); // Btn disabled by default
+    chrome.browserAction.disable(); // Btn disabled by default
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         toggleEbatesButton();
