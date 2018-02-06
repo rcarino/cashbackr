@@ -1,4 +1,4 @@
-import {cashbackDomains, domainToSpecialEbatesUrl} from "./cashbackDomains.js";
+let cashbackDomains, domainToSpecialEbatesUrl; // Will be set on init
 
 const goToEbates = () => {
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, tabs => {
@@ -25,7 +25,13 @@ const toggleEbatesButton = () => {
     });
 };
 
-const initPlugin = () => {
+async function initPlugin() {
+
+    // Why XHR instead of import? Node doesn't support es6 modules. There's a node script that reads
+    // cashbackDomains.json to determine whether the list of ebates domain has added or removed cashback merchants
+    cashbackDomains = new Set(await $.get('cashbackDomains.json'));
+    domainToSpecialEbatesUrl = await $.get('domainRedirectMap.json');
+
     chrome.browserAction.disable(); // Btn disabled by default
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
@@ -37,6 +43,6 @@ const initPlugin = () => {
     });
 
     chrome.browserAction.onClicked.addListener(goToEbates);
-};
+}
 
 initPlugin();
