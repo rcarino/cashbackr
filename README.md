@@ -29,7 +29,7 @@ flying money logo will become clickable and link you to Ebates' store link.
 browsing history, it only reads the active tab's URL. Chrome does not offer a finer permission to only view the active 
 tab's URL. This is verifiable in the [source code](https://github.com/rcarino/cashbackr).
 
-**Q:** *Why should I use CashBackR instead of Ebates' first party Cash Back Button?*
+**Q:** *Why should I use CashBackR instead of Ebates' first party Cash Back Button?* <br />
 **A:** According to Ebates' 
 [terms of service](https://www.ebates.com/help/article/ebates-cash-back-shopping-program-terms-115013182127#browser-terms), 
 section 5.5.2, installing the Cash Back Button allows Ebates to record visited URLs and page content. 
