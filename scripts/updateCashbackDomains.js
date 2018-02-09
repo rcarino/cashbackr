@@ -1,8 +1,7 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const _ = require('lodash');
-const {promisify} = require('util');
+const pfs = require('./helpers/pfs');
 
 /**
  * Node script that updates well known list of cashback domains if any changes are detected
@@ -11,15 +10,8 @@ const {promisify} = require('util');
 const ASSETS = '../src/assets';
 const OLDCASHBACKDOMAINS = `${ASSETS}/cashbackDomains.json`;
 
-const pReadFile = promisify(fs.readFile); // Allows script to expect errors and not barf if a file is not found
-
 async function checkForCashbackDomainChanges() {
-    let oldDomains;
-    try {
-        oldDomains = JSON.parse(await pReadFile(OLDCASHBACKDOMAINS, 'utf8'));
-    } catch (e) {
-        // File not found
-    }
+    const oldDomains = await pfs.readJson(OLDCASHBACKDOMAINS, defaultVal=[]);
 
     // May bail here if we can't fetch data from ebates
     const data = (await axios.get('https://www.ebates.com/ajax/stores/sort.htm?sort=alpha&categoryid=')).data;
@@ -37,28 +29,20 @@ async function checkForCashbackDomainChanges() {
         const removed = oldDomains.filter(d => !sNewDomains.has(d));
         console.log(`REMOVED ${removed.length} DOMAINS: ${removed}`);
 
-        fs.writeFile(OLDCASHBACKDOMAINS, JSON.stringify(newDomains), 'utf8');
+        pfs.writeJson(OLDCASHBACKDOMAINS, newDomains);
     } else {
         console.log('NO CHANGES DETECTED');
     }
 
-    // await flagSpecialCases(newDomains);
+    await flagSpecialCases(newDomains);
 }
 
 const domainExtractorRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+)/im;
 
-async function getSpecialCaseDomains() {
-    try {
-        return Object.values(JSON.parse(await pReadFile(`${ASSETS}/domainRedirectMap.json`, 'utf8')));
-    } catch (e) {
-        return []; // File not found
-    }
-}
-
 // If a domain results in a 404 or redirect, the ebates merchant link may not correspond to a merchant's actual domain
 async function flagSpecialCases(domains) {
-    const specialCases = new Set(await getSpecialCaseDomains());
-    for(let d of domains) {
+    const specialCases = new Set(Object.values(await pfs.readJson(`${ASSETS}/domainRedirectMap.json`, defaulVal={})));
+    for (let d of domains) {
         if (!specialCases.has(d)) {
             try {
                 const resp = await axios.get(`https://${d}`, {timeout: 2000});
@@ -66,8 +50,8 @@ async function flagSpecialCases(domains) {
                 if (respUrl.match(domainExtractorRegex)[1] !== d) {
                     console.error(`Original domain ${d} was redirected to ${respUrl}`)
                 }
-            } catch(e) {
-                // console.error(`FAILED TO REACH ${d} with error: ${e}`);
+            } catch (e) {
+                console.error(`FAILED TO REACH ${d} with error: ${e}`);
             }
         }
     }
