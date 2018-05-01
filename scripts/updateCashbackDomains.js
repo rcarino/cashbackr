@@ -11,13 +11,14 @@ const ASSETS = '../src/assets';
 const OLDCASHBACKDOMAINS = `${ASSETS}/cashbackDomains.json`;
 
 async function checkForCashbackDomainChanges() {
-    const oldDomains = await pfs.readJson(OLDCASHBACKDOMAINS, defaultVal=[]);
+    const oldDomains = await pfs.readJson(OLDCASHBACKDOMAINS, defaultVal = []);
 
     // May bail here if we can't fetch data from ebates
     const data = (await axios.get('https://www.ebates.com/ajax/stores/sort.htm?sort=alpha&categoryid=')).data;
 
     const $ = cheerio.load(data);
-    const newDomains = $('.name-link').map((i, el) => $(el).attr('href').slice(1)).toArray();
+    const $storesWithDiscount = $(".store:not(:contains('No Discount'))");
+    const newDomains = $storesWithDiscount.find('.name-link').map((i, el) => $(el).attr('href').slice(1)).toArray();
 
     if (!_.isEqual(oldDomains, newDomains)) {
         const [sOldDomains, sNewDomains] = [new Set(oldDomains), new Set(newDomains)];
@@ -41,7 +42,7 @@ const domainExtractorRegex = /^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:\/\n]+
 
 // If a domain results in a 404 or redirect, the ebates merchant link may not correspond to a merchant's actual domain
 async function flagSpecialCases(domains) {
-    const specialCases = new Set(Object.values(await pfs.readJson(`${ASSETS}/domainRedirectMap.json`, defaulVal={})));
+    const specialCases = new Set(Object.values(await pfs.readJson(`${ASSETS}/domainRedirectMap.json`, defaulVal = {})));
     for (let d of domains) {
         if (!specialCases.has(d)) {
             try {
